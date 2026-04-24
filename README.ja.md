@@ -6,7 +6,8 @@ Cisco SD-WAN vManage のユーザーグループ (User Group) に対して、RBA
 
 ## 機能
 
-- 現在の権限状態の確認 (`--check-only`)
+- **ローカル Web UI (Streamlit)**: `http://localhost:8501` から権限の確認・編集を GUI で実施
+- **CLI**: 現在の権限状態の確認 (`--check-only`)
 - 全機能に対する一括変更 (`--mode all-write` / `--mode all-read`)
 - 特定機能のみを対象とした変更 (`--mode targeted`)
 - 変更前後の比較表示 (ERW bits 形式: Enabled, Read, Write)
@@ -34,7 +35,35 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 使い方
+## クイックスタート (Web UI)
+
+本プロジェクトでは Streamlit ベースの Web UI の利用を推奨します。
+
+```bash
+pip install -r requirements.txt
+streamlit run webapp.py --server.address 127.0.0.1
+# ブラウザで http://localhost:8501 を開きます
+```
+
+### 画面構成
+
+- **サイドバー (接続設定)**: vManage ホスト / ユーザー / パスワードを入力し **Login** ボタンを押下します。接続状態はバッジで表示されます。ホストとユーザーの既定値は環境変数 `VMANAGE_HOST` / `VMANAGE_USER` から読み込めます (パスワードは読み込みません)。
+- **Tab 1 — Groups**: `/dataservice/admin/usergroup` から取得したユーザーグループ一覧を表示します。編集対象のグループを選択します。
+- **Tab 2 — Current Status**: 選択グループの全タスク (Feature / Enabled / Read / Write) と、サマリ指標 (total / enabled / read-only / write-enabled) を表示します。
+- **Tab 3 — Edit Permissions**: データエディタ上で権限を編集できます。プリセットボタン (*All Write* / *All Read* / *Reset to Current*) を用意しています。変更行は ERW bits 形式で差分プレビューされます。**Dry-run** チェックボックスを有効にすると検証のみ、外すと **Apply Changes** で PUT が実行されます。
+- **Tab 4 — Raw JSON**: 選択グループの生 JSON を参照用に表示します (デバッグ向け)。
+
+### Web UI のセキュリティ
+
+- `127.0.0.1` へのバインドを強く推奨します。Streamlit の既定ポートを公開ネットワークに露出しないでください。
+- サイドバーに入力された認証情報は Streamlit のセッションステート (メモリ上) にのみ保持されます。本プロジェクトはディスクへ書き込みません。
+- 自己署名証明書に対応するため vManage への HTTPS 証明書検証は無効 (`verify=False`) にしており、CLI と同じ挙動です。
+
+---
+
+## CLI の使い方
+
+既存の CLI (`rbac-change-vmanage-user.py`) は自動化用途向けに従来互換のまま残しています。
 
 ### 1. 現在の権限を確認する (推奨: 最初の動作確認)
 

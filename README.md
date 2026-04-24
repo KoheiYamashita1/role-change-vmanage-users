@@ -6,7 +6,8 @@ A Python script that bulk-checks and updates RBAC task permissions (Read / Write
 
 ## Features
 
-- Inspect the current permission state (`--check-only`)
+- **Local Web UI (Streamlit)**: inspect and edit permissions visually from `http://localhost:8501`
+- **CLI**: inspect the current permission state (`--check-only`)
 - Bulk update every feature (`--mode all-write` / `--mode all-read`)
 - Update a specific subset of features only (`--mode targeted`)
 - Before / after comparison in `ERW` bits (Enabled, Read, Write)
@@ -34,7 +35,35 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Quick Start (Web UI)
+
+The recommended way to use this project is the Streamlit Web UI.
+
+```bash
+pip install -r requirements.txt
+streamlit run webapp.py --server.address 127.0.0.1
+# Then open http://localhost:8501 in your browser.
+```
+
+### Screen layout
+
+- **Sidebar (Connection)**: enter vManage host / user / password and click **Login**. The connection status is shown as a badge. Defaults for host / user can be pre-populated via the environment variables `VMANAGE_HOST` and `VMANAGE_USER` (the password is never pre-populated).
+- **Tab 1 — Groups**: lists all user groups returned by `/dataservice/admin/usergroup`. Pick the group you want to inspect / edit.
+- **Tab 2 — Current Status**: shows every task for the selected group (Feature / Enabled / Read / Write) plus summary metrics (total / enabled / read-only / write-enabled).
+- **Tab 3 — Edit Permissions**: edit the table with an interactive data editor. Preset buttons for *All Write* / *All Read* / *Reset to Current* are available. The diff of changed rows is previewed in `ERW` bits. Use the **Dry-run** checkbox to validate without pushing changes, otherwise click **Apply Changes** to `PUT` the updated payload to vManage.
+- **Tab 4 — Raw JSON**: read-only view of the raw group JSON for debugging.
+
+### Security for the Web UI
+
+- Binding to `127.0.0.1` is strongly recommended so the UI is reachable only from your local machine. Do **not** expose the default Streamlit port on a public network.
+- Credentials entered in the sidebar are kept only in the in-memory Streamlit session state. They are never written to disk by this project.
+- HTTPS certificate verification against vManage is disabled (`verify=False`) to accommodate self-signed certificates, matching the CLI behavior.
+
+---
+
+## CLI Usage
+
+The original CLI (`rbac-change-vmanage-user.py`) is kept for automation and is fully backward compatible.
 
 ### 1. Check current permissions (recommended first step)
 

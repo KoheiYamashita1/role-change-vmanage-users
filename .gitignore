@@ -34,3 +34,7 @@ Thumbs.db
 secrets.*
 *.pem
 *.key
+
+# Streamlit
+.streamlit/
+secrets.toml
