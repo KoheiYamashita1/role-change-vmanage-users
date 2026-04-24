@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and local backups
+*.log
+*.old
+*.old2
+*.bak
+*.tmp
+
+# Secrets
+.env
+.env.*
+secrets.*
+*.pem
+*.key
