@@ -20,8 +20,10 @@ Cisco SD-WAN vManage のユーザーグループ (User Group) に対して、RBA
 
 ### 依存ライブラリ
 
+`requirements.txt` からインストールできます。
+
 ```bash
-pip install requests
+pip install -r requirements.txt
 ```
 
 仮想環境の利用を推奨します。
@@ -29,7 +31,7 @@ pip install requests
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install requests
+pip install -r requirements.txt
 ```
 
 ## 使い方

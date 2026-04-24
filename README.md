@@ -20,8 +20,10 @@ A Python script that bulk-checks and updates RBAC task permissions (Read / Write
 
 ### Dependencies
 
+Install from `requirements.txt`:
+
 ```bash
-pip install requests
+pip install -r requirements.txt
 ```
 
 A virtual environment is recommended:
@@ -29,7 +31,7 @@ A virtual environment is recommended:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install requests
+pip install -r requirements.txt
 ```
 
 ## Usage
